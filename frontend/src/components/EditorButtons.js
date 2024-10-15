@@ -2,16 +2,16 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useTheme, useMediaQuery } from '@mui/material';
-import ResetIcon from '@mui/icons-material/RotateLeft';
 import SendIcon from '@mui/icons-material/SendToMobile';
-import DownloadIcon from '@mui/icons-material/Download';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-const EditorButtons = ({ submitOnClick, resetOnClick, downloadOnClick }) => {
+import { useNavigate } from 'react-router-dom';
+const EditorButtons = ({ submitOnClick, downloadOnClick,showDownloadOptions }) => {
     const theme = useTheme();
     const isMd = useMediaQuery(
         theme.breakpoints.up('md'),
         { defaultMatches: true }
     );
+    const navigate = useNavigate();
     
     return (
         <>
@@ -45,7 +45,8 @@ const EditorButtons = ({ submitOnClick, resetOnClick, downloadOnClick }) => {
                     Get Prediction
                 </Button>
                 
-                <Box
+                {showDownloadOptions && <>
+                    <Box
                     marginTop={{ xs: 2, sm: 0 }}
                     marginLeft={{ sm: 1 }}
                     width={{ xs: '100%', md: 'auto' }}
@@ -73,6 +74,30 @@ const EditorButtons = ({ submitOnClick, resetOnClick, downloadOnClick }) => {
                        Download Prediction
                     </Button>
                 </Box>
+                <Button
+                    variant='contained'
+                    color='primary'
+                    size='medium'
+                    startIcon={<SendIcon />}
+                    fullWidth={isMd ? false : true}
+                    disableElevation={true}
+                    onClick={()=>navigate('/send-mail')}
+                    sx={{
+                        padding: '14px 30px',
+                        marginRight: '15px',
+                        fontSize: '18px',
+                        border: '2px solid ' + theme.palette.primary.main,
+                        '&:hover': {
+                            backgroundColor: 'transparent',
+                            color: theme.palette.primary.main,
+                            border: '2px solid ' + theme.palette.primary.main
+                        }
+                    }}
+                >
+                    Send To Email
+                </Button>
+                </>}
+                
             </Box>
         </ >
     );

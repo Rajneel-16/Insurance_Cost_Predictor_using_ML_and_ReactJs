@@ -16,6 +16,7 @@ import EditorButtons from '../components/EditorButtons';
 import Spacer from '../components/Spacer';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import { Sex,SmokingNature,RegionOfResidence } from '../utils';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 const InsuranceForm = () => {
@@ -69,17 +70,21 @@ const InsuranceForm = () => {
           setResult(true);
           console.log(prediction)
           console.log(JSON.stringify(modifiedFormData))
-
+          console.log(data[0] + " this is data")
+          const result = {
+            ...formData,
+            ["sex"] : Sex[formData.sex],
+            ["region"] : RegionOfResidence[formData.region],
+            ["smoker"] : SmokingNature[formData.smoker], 
+            "result" : data[0]
+          };
+          localStorage.setItem('report',JSON.stringify(result));
 
         } catch (error) {
           console.error(error);
         }
       };
-      
-    
 
- 
- 
 const handleDownload = () => {
     const documentDefinition = {
       content: [
@@ -91,7 +96,7 @@ const handleDownload = () => {
           text: "Age: " + formData.age
         },
         {
-          text: "Sex: " + (formData.sex === "0" ? "Female" : "Male")
+          text: "Sex: " + Sex[formData.sex]/* (formData.sex === "0" ? "Female" : "Male") */
         },
         {
           text: "BMI: " + formData.bmi
@@ -100,17 +105,17 @@ const handleDownload = () => {
           text: "Children: " + formData.children
         },
         {
-          text: "Smoker: " + (formData.smoker === "0" ? "Smoker" : "non-smoker")
+          text: "Smoker: " + SmokingNature[formData.smoker]/* (formData.smoker === "0" ? "Smoker" : "non-smoker") */
         },
         {
-          text: "Region: " +
-            (formData.region === "0"
+          text: "Region: " + RegionOfResidence[formData.region]
+            /* (formData.region === "0"
               ? "Northwest"
               : formData.region === "1"
               ? "Northeast"
               : formData.region === "2"
               ? "Southwest"
-              : "Southeast")
+              : "Southeast") */
         },
         {
           text: "Prediction: " +  `$${prediction}`
@@ -310,6 +315,7 @@ const handleDownload = () => {
                                 <EditorButtons
                                     submitOnClick={handleSubmit}
                                     downloadOnClick={handleDownload}
+                                    showDownloadOptions={result}
                                 />
                             </Box>
                         </Grid>

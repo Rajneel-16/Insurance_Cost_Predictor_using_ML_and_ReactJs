@@ -7,6 +7,7 @@ import Layout from './layout/Layout';
 import Home from './pages/Home';
 import InsuranceForm from './pages/InsuranceForm';
 import Static from './pages/Static';
+import SendMail from './pages/SendMail';
 
 const App = () => {
   return (
@@ -18,7 +19,7 @@ const App = () => {
             <Route exact path='/' element={<Home />} />
             <Route exact path='/insurance-form' element={<InsuranceForm />} />
             <Route exact path='/static' element={<Static />} />
-
+            <Route path='/send-mail' element={<SendMail/>}></Route>
           </Routes>
         </Layout>
       </BrowserRouter>
